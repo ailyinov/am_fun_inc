@@ -1,8 +1,9 @@
-
+/.idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/assets
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -23,3 +24,5 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+/postgresql/*
