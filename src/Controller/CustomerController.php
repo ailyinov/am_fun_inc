@@ -47,7 +47,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_customer_show', methods: ['GET'])]
+    #[Route('/{customer}', name: 'app_customer_show', methods: ['GET'])]
     public function show(Customer $customer): Response
     {
         return $this->json([
@@ -55,7 +55,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_customer_edit', methods: ['PUT'])]
+    #[Route('/{customer}', name: 'app_customer_edit', methods: ['PUT'])]
     public function edit(#[MapRequestPayload] CustomerUpdate $customerUpdate, Customer $customer, EntityManagerInterface $entityManager): JsonResponse
     {
         $customer->setFirstName($customerUpdate->firstName ?? $customer->getFirstName())
@@ -76,7 +76,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('{id}/is-loan-available/{lid}', name: 'app_customer_loan_check', methods: ['GET'])]
+    #[Route('/{customer}/is-loan-available/{loan}', name: 'app_customer_loan_check', methods: ['GET'])]
     public function isLoanAvailable(Customer $customer, Loan $loan, EntityManagerInterface $entityManager): JsonResponse
     {
         return $this->json([
