@@ -8,6 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: LoanRepository::class)]
 class Loan
 {
+    const FICO_MIN = 500;
+
+    const AGE_MIN = 18;
+
+    const AGE_MAX = 60;
+
+    const STATES_AVAILABLE = ['CA', 'NY', 'NV'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]

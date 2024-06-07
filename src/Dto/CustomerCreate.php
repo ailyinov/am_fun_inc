@@ -18,7 +18,13 @@ readonly class CustomerCreate
         public readonly string $birthDate,
 
         #[Assert\NotBlank]
-        public readonly string $address,
+        public readonly ?string $city,
+
+        #[Assert\NotBlank]
+        public readonly ?string $state,
+
+        #[Assert\NotBlank]
+        public readonly ?string $zip,
 
         #[Assert\NotBlank]
         public readonly string $ssn,

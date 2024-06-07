@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Dto\CustomerCreate;
 use App\Dto\CustomerUpdate;
 use App\Entity\Customer;
+use App\Entity\Loan;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +32,9 @@ class CustomerController extends AbstractController
         $c->setFirstName($customerCreate->firstName)
             ->setLastName($customerCreate->lastName)
             ->setEmail($customerCreate->email)
-            ->setAddress($customerCreate->address)
+            ->setCity($customerCreate->city)
+            ->setState($customerCreate->state)
+            ->setZip($customerCreate->zip)
             ->setFico($customerCreate->fico)
             ->setBirthDate(\DateTime::createFromFormat('Y-m-d', $customerCreate->birthDate))
             ->setPhoneNumber($customerCreate->phoneNumber)
@@ -58,7 +61,9 @@ class CustomerController extends AbstractController
         $customer->setFirstName($customerUpdate->firstName ?? $customer->getFirstName())
             ->setLastName($customerUpdate->lastName ?? $customer->getLastName())
             ->setEmail($customerUpdate->email ?? $customer->getEmail())
-            ->setAddress($customerUpdate->address ?? $customer->getAddress())
+            ->setCity($customerUpdate->city ?? $customer->getCity())
+            ->setState($customerUpdate->state ?? $customer->getState())
+            ->setZip($customerUpdate->zip ?? $customer->getZip())
             ->setFico($customerUpdate->fico ?? $customer->getFico())
             ->setBirthDate($customerUpdate->birthDate ? \DateTime::createFromFormat('Y-m-d', $customerUpdate->birthDate) : $customer->getBirthDate())
             ->setPhoneNumber($customerUpdate->phoneNumber ?? $customer->getPhoneNumber())
@@ -68,6 +73,14 @@ class CustomerController extends AbstractController
 
         return $this->json([
             'customer' => [],
+        ]);
+    }
+
+    #[Route('{id}/is-loan-available/{lid}', name: 'app_customer_loan_check', methods: ['GET'])]
+    public function isLoanAvailable(Customer $customer, Loan $loan, EntityManagerInterface $entityManager): JsonResponse
+    {
+        return $this->json([
+            'ok' => $customer->canGetLoan($loan),
         ]);
     }
 }

@@ -24,7 +24,13 @@ class Customer
     private \DateTimeInterface $birthDate;
 
     #[ORM\Column(length: 255)]
-    private string $address;
+    private string $city;
+
+    #[ORM\Column(length: 255)]
+    private string $state;
+
+    #[ORM\Column(length: 255)]
+    private string $zip;
 
     #[ORM\Column(length: 255)]
     private string $ssn;
@@ -86,14 +92,38 @@ class Customer
         return $this;
     }
 
-    public function getAddress(): string
+    public function getCity(): string
     {
-        return $this->address;
+        return $this->city;
     }
 
-    public function setAddress(string $address): static
+    public function setCity(string $city): static
     {
-        $this->address = $address;
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getZip(): string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(string $zip): static
+    {
+        $this->zip = $zip;
 
         return $this;
     }
@@ -144,5 +174,23 @@ class Customer
         $this->phoneNumber = $phoneNumber;
 
         return $this;
+    }
+
+    public function canGetLoan(Loan $loan): bool
+    {
+        $age = $this->age();
+        $ok = $this->fico > Loan::FICO_MIN &&
+            $age >= Loan::AGE_MIN &&
+            $age <= Loan::AGE_MAX &&
+            in_array($this->getState(), Loan::STATES_AVAILABLE);
+
+        return $ok && ($this->getState() !== 'NY' || 1 === rand(0, 1));
+    }
+
+    private function age(): int
+    {
+        $today = new \DateTime();
+
+        return $today->diff($this->getBirthDate())->y;
     }
 }

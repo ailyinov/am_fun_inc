@@ -3,6 +3,7 @@
 namespace App\Test\Controller;
 
 use App\Entity\Customer;
+use App\Entity\Loan;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -47,7 +48,9 @@ class CustomerControllerTest extends WebTestCase
                 'lastName' => 'test',
                 'firstName' => ' test',
                 'birthDate' => '1990-08-08',
-                'address' => 'NY, NY, 2208',
+                'city' => 'New York',
+                'state' => 'NY',
+                'zip' => '2208',
                 'ssn' => '1234t5667',
                 'fico' => 300,
                 'email' => 'test@email.com',
@@ -66,7 +69,9 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setLastName('My Title');
         $fixture->setFirstName('My Title');
         $fixture->setBirthDate(new \DateTime());
-        $fixture->setAddress('My Title');
+        $fixture->setCity('New York');
+        $fixture->setState('NY');
+        $fixture->setZip('2222');
         $fixture->setSsn('My Title');
         $fixture->setFico(300);
         $fixture->setEmail('My Title');
@@ -88,7 +93,9 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setLastName('Value');
         $fixture->setFirstName('Value');
         $fixture->setBirthDate(new \DateTime());
-        $fixture->setAddress('Value');
+        $fixture->setCity('New York');
+        $fixture->setState('NY');
+        $fixture->setZip('2222');
         $fixture->setSsn('Value');
         $fixture->setFico(300);
         $fixture->setEmail('Value');
@@ -105,7 +112,9 @@ class CustomerControllerTest extends WebTestCase
                 'lastName' => 'test22',
                 'firstName' => ' test22',
                 'birthDate' => $expectedBirthDate,
-                'address' => 'NY, NY, 2208',
+                'city' => 'Los Angeles',
+                'state' => 'CA',
+                'zip' => '2223',
                 'ssn' => '1234t5667',
                 'fico' => 301,
                 'email' => 'test@email.com',
@@ -120,7 +129,9 @@ class CustomerControllerTest extends WebTestCase
         self::assertSame('test22', $fixture[0]->getLastName());
         self::assertSame(' test22', $fixture[0]->getFirstName());
         self::assertSame($expectedBirthDate, $fixture[0]->getBirthDate()->format('Y-m-d'));
-        self::assertSame('NY, NY, 2208', $fixture[0]->getAddress());
+        self::assertSame('Los Angeles', $fixture[0]->getCity());
+        self::assertSame('CA', $fixture[0]->getState());
+        self::assertSame('2223', $fixture[0]->getZip());
         self::assertSame('1234t5667', $fixture[0]->getSsn());
         self::assertSame(301, $fixture[0]->getFico());
         self::assertSame('test@email.com', $fixture[0]->getEmail());
@@ -134,7 +145,9 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setLastName('Value');
         $fixture->setFirstName('Value');
         $fixture->setBirthDate($expectedBirthDate);
-        $fixture->setAddress('Value');
+        $fixture->setCity('New York');
+        $fixture->setState('NY');
+        $fixture->setZip('2222');
         $fixture->setSsn('Value');
         $fixture->setFico(300);
         $fixture->setEmail('Value');
@@ -158,10 +171,47 @@ class CustomerControllerTest extends WebTestCase
         self::assertSame('Value', $fixture[0]->getLastName());
         self::assertSame('Value', $fixture[0]->getFirstName());
         self::assertSame($expectedBirthDate->format('Y-m-d'), $fixture[0]->getBirthDate()->format('Y-m-d'));
-        self::assertSame('Value', $fixture[0]->getAddress());
+        self::assertSame('New York', $fixture[0]->getCity());
+        self::assertSame('NY', $fixture[0]->getState());
+        self::assertSame('2222', $fixture[0]->getZip());
         self::assertSame('Value', $fixture[0]->getSsn());
         self::assertSame(300, $fixture[0]->getFico());
         self::assertSame('Value', $fixture[0]->getEmail());
         self::assertSame('Value', $fixture[0]->getPhoneNumber());
     }
+
+//    public function testIsLoanAvailable(): void
+//    {
+//        $fc = new Customer();
+//        $fc->setLastName('Value');
+//        $fc->setFirstName('Value');
+//        $fc->setBirthDate(new \DateTime('now -22 year'));
+//        $fc->setCity('Los Angeles');
+//        $fc->setState('CA');
+//        $fc->setZip('2223');
+//        $fc->setSsn('Value');
+//        $fc->setFico(600);
+//        $fc->setEmail('Value');
+//        $fc->setPhoneNumber('Value');
+//        $this->manager->persist($fc);
+//
+//        $fl = new Loan();
+//        $fl->setPercent(2)
+//            ->setName('business')
+//            ->setAmount(1000000)
+//            ->setTermDays(365 * 5);
+//        $this->manager->persist($fl);
+//
+//        $this->manager->flush();
+//
+//        $this->client->request(
+//            'GET',
+//            sprintf('%s%s/is-loan-available/%s', $this->path, $fc->getId(), $fl->getId()),
+//        );
+//
+//        $response = $this->client->getResponse();
+//        $this->assertSame(200, $response->getStatusCode());
+//        $responseData = json_decode($response->getContent(), true);
+//        $this->assertTrue($responseData['ok']);
+//    }
 }

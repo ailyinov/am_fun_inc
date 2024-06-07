@@ -14,7 +14,11 @@ readonly class CustomerUpdate
         #[Assert\Date]
         public readonly ?string $birthDate,
 
-        public readonly ?string $address,
+        public readonly ?string $city,
+
+        public readonly ?string $state,
+
+        public readonly ?string $zip,
 
         public readonly ?string $ssn,
 
