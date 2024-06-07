@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Http\Controller;
 
-use App\Dto\CustomerCreate;
-use App\Dto\CustomerUpdate;
-use App\Entity\Customer;
-use App\Entity\Loan;
-use App\Repository\CustomerRepository;
+use App\Domain\Entity\Customer;
+use App\Domain\Entity\Loan;
+use App\Http\RequestDto\CustomerCreate;
+use App\Http\RequestDto\CustomerUpdate;
+use App\Infrastructure\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

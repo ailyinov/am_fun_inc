@@ -2,9 +2,9 @@
 
 namespace App\Test\Controller;
 
-use App\Entity\Customer;
-use App\Entity\Loan;
-use App\Repository\LoanRepository;
+use App\Domain\Entity\Customer;
+use App\Domain\Entity\Loan;
+use App\Infrastructure\Repository\LoanRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
