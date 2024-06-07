@@ -73,7 +73,7 @@ class Loan
         return $this;
     }
 
-    public function getAmount(): iint
+    public function getAmount(): int
     {
         return $this->amount;
     }
