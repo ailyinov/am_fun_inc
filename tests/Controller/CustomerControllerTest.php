@@ -63,6 +63,7 @@ class CustomerControllerTest extends WebTestCase
                 'fico' => 300,
                 'email' => 'test@email.com',
                 'phoneNumber' => '+105999873',
+                'monthlyIncome' => '20000',
             ]
         );
 
@@ -84,6 +85,7 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setFico(300);
         $fixture->setEmail('My Title');
         $fixture->setPhoneNumber('My Title');
+        $fixture->setMonthlyIncome(5000);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -108,6 +110,7 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setFico(300);
         $fixture->setEmail('Value');
         $fixture->setPhoneNumber('Value');
+        $fixture->setMonthlyIncome(5000);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -160,6 +163,7 @@ class CustomerControllerTest extends WebTestCase
         $fixture->setFico(300);
         $fixture->setEmail('Value');
         $fixture->setPhoneNumber('Value');
+        $fixture->setMonthlyIncome(5000);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -201,6 +205,7 @@ class CustomerControllerTest extends WebTestCase
         $fc->setFico(600);
         $fc->setEmail('Value');
         $fc->setPhoneNumber('Value');
+        $fc->setMonthlyIncome(5000);
         $this->manager->persist($fc);
 
         $fl = new Loan();

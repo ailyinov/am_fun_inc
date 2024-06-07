@@ -39,6 +39,7 @@ class CustomerController extends AbstractController
             ->setFico($customerCreate->fico)
             ->setBirthDate(\DateTime::createFromFormat('Y-m-d', $customerCreate->birthDate))
             ->setPhoneNumber($customerCreate->phoneNumber)
+            ->setMonthlyIncome($customerCreate->monthlyIncome)
             ->setSsn($customerCreate->ssn);
         $entityManager->persist($c);
         $entityManager->flush();

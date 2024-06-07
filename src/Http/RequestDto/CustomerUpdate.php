@@ -30,6 +30,8 @@ readonly class CustomerUpdate
         public readonly ?string $email,
 
         public readonly ?string $phoneNumber,
+
+        public readonly ?int $monthlyIncome
     )
     {
     }

@@ -40,6 +40,9 @@ readonly class CustomerCreate
 
         #[Assert\NotBlank]
         public readonly string $phoneNumber,
+
+        #[Assert\NotBlank]
+        public readonly int $monthlyIncome
     )
     {
     }
