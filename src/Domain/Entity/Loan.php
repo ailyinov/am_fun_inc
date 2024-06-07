@@ -25,7 +25,7 @@ class Loan
     private string $name;
 
     #[ORM\Column]
-    private int $term_days;
+    private int $termDays;
 
     #[ORM\Column]
     private int $percent;
@@ -59,12 +59,12 @@ class Loan
 
     public function getTermDays(): int
     {
-        return $this->term_days;
+        return $this->termDays;
     }
 
-    public function setTermDays(int $term_days): static
+    public function setTermDays(int $termDays): static
     {
-        $this->term_days = $term_days;
+        $this->termDays = $termDays;
 
         return $this;
     }

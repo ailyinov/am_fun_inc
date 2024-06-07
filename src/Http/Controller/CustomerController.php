@@ -2,6 +2,7 @@
 
 namespace App\Http\Controller;
 
+use App\App\LoanIssuer;
 use App\Domain\Entity\Customer;
 use App\Domain\Entity\Loan;
 use App\Http\RequestDto\CustomerCreate;
@@ -77,10 +78,20 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/{customer}/is-loan-available/{loan}', name: 'app_customer_loan_check', methods: ['GET'])]
-    public function isLoanAvailable(Customer $customer, Loan $loan, EntityManagerInterface $entityManager): JsonResponse
+    public function isLoanAvailable(Customer $customer, Loan $loan): JsonResponse
     {
         return $this->json([
             'ok' => $customer->canGetLoan($loan),
+        ]);
+    }
+
+    #[Route('/{customer}/issue-loan/{loan}', name: 'app_customer_loan_check', methods: ['GET'])]
+    public function issueLoan(Customer $customer, Loan $loan, LoanIssuer $loanIssuer): JsonResponse
+    {
+        $loanIssuer->issue($customer, $loan);
+
+        return $this->json([
+            'ok' => true,
         ]);
     }
 }

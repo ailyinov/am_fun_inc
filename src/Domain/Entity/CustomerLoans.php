@@ -23,6 +23,9 @@ class CustomerLoans
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private \DateTimeInterface $due_date;
 
+    #[ORM\Column]
+    private int $percent;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -67,6 +70,18 @@ class CustomerLoans
     public function setDueDate(\DateTimeInterface $due_date): static
     {
         $this->due_date = $due_date;
+
+        return $this;
+    }
+
+    public function getPercent(): int
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(int $percent): static
+    {
+        $this->percent = $percent;
 
         return $this;
     }
