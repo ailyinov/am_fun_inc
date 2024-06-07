@@ -86,7 +86,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{customer}/issue-loan/{loan}', name: 'app_customer_loan_check', methods: ['GET'])]
+    #[Route('/{customer}/issue-loan/{loan}', name: 'app_customer_loan_issue', methods: ['GET'])]
     public function issueLoan(Customer $customer, Loan $loan, LoanIssuer $loanIssuer): JsonResponse
     {
         $loanIssuer->issue($customer, $loan);
