@@ -44,6 +44,9 @@ class Customer
     #[ORM\Column(length: 255)]
     private string $phoneNumber;
 
+    #[ORM\Column]
+    private int $monthlyIncome;
+
     public function getId(): int
     {
         return $this->id;
@@ -172,6 +175,18 @@ class Customer
     public function setPhoneNumber(string $phoneNumber): static
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getMonthlyIncome(): int
+    {
+        return $this->monthlyIncome;
+    }
+
+    public function setMonthlyIncome(int $monthlyIncome): static
+    {
+        $this->monthlyIncome = $monthlyIncome;
 
         return $this;
     }
