@@ -4,6 +4,7 @@ namespace App\Test\Controller;
 
 use App\Entity\Customer;
 use App\Entity\Loan;
+use App\Repository\LoanRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -14,6 +15,7 @@ class CustomerControllerTest extends WebTestCase
     private KernelBrowser $client;
     private EntityManagerInterface $manager;
     private EntityRepository $repository;
+    private LoanRepository $loanRepo;
     private string $path = '/customer/';
 
     protected function setUp(): void
@@ -23,6 +25,12 @@ class CustomerControllerTest extends WebTestCase
         $this->repository = $this->manager->getRepository(Customer::class);
 
         foreach ($this->repository->findAll() as $object) {
+            $this->manager->remove($object);
+        }
+
+        $this->loanRepo = $this->manager->getRepository(Loan::class);
+
+        foreach ($this->loanRepo->findAll() as $object) {
             $this->manager->remove($object);
         }
 
@@ -180,38 +188,38 @@ class CustomerControllerTest extends WebTestCase
         self::assertSame('Value', $fixture[0]->getPhoneNumber());
     }
 
-//    public function testIsLoanAvailable(): void
-//    {
-//        $fc = new Customer();
-//        $fc->setLastName('Value');
-//        $fc->setFirstName('Value');
-//        $fc->setBirthDate(new \DateTime('now -22 year'));
-//        $fc->setCity('Los Angeles');
-//        $fc->setState('CA');
-//        $fc->setZip('2223');
-//        $fc->setSsn('Value');
-//        $fc->setFico(600);
-//        $fc->setEmail('Value');
-//        $fc->setPhoneNumber('Value');
-//        $this->manager->persist($fc);
-//
-//        $fl = new Loan();
-//        $fl->setPercent(2)
-//            ->setName('business')
-//            ->setAmount(1000000)
-//            ->setTermDays(365 * 5);
-//        $this->manager->persist($fl);
-//
-//        $this->manager->flush();
-//
-//        $this->client->request(
-//            'GET',
-//            sprintf('%s%s/is-loan-available/%s', $this->path, $fc->getId(), $fl->getId()),
-//        );
-//
-//        $response = $this->client->getResponse();
-//        $this->assertSame(200, $response->getStatusCode());
-//        $responseData = json_decode($response->getContent(), true);
-//        $this->assertTrue($responseData['ok']);
-//    }
+    public function testIsLoanAvailable(): void
+    {
+        $fc = new Customer();
+        $fc->setLastName('Value');
+        $fc->setFirstName('Value');
+        $fc->setBirthDate(new \DateTime('now -22 year'));
+        $fc->setCity('Los Angeles');
+        $fc->setState('CA');
+        $fc->setZip('2223');
+        $fc->setSsn('Value');
+        $fc->setFico(600);
+        $fc->setEmail('Value');
+        $fc->setPhoneNumber('Value');
+        $this->manager->persist($fc);
+
+        $fl = new Loan();
+        $fl->setPercent(2)
+            ->setName('business')
+            ->setAmount(1000000)
+            ->setTermDays(365 * 5);
+        $this->manager->persist($fl);
+
+        $this->manager->flush();
+
+        $this->client->request(
+            'GET',
+            sprintf('%s%s/is-loan-available/%s', $this->path, $fc->getId(), $fl->getId()),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData['ok']);
+    }
 }
