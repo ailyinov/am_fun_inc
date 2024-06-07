@@ -21,8 +21,8 @@ class LoanIssuer
             $cl = new CustomerLoans();
             $cl->setCustomerId($customer->getId())
                 ->setLoanId($loan->getId())
-                ->setDueDate((new \DateTime())->add(new \DateInterval($loan->getTermDays())))
-                ->setPercent($loan->getPercent());
+                ->setDueDate((new \DateTime())->add(new \DateInterval(sprintf('P%sD', $loan->getTermDays()))))
+                ->setPercent($loan->getStatePercent($customer->getState()));
 
             $this->em->persist($loan);
             $this->em->flush();

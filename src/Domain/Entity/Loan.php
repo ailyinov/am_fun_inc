@@ -92,4 +92,9 @@ class Loan
 
         return $this;
     }
+
+    public function getStatePercent(string $state)
+    {
+        return $state === 'CA' ? $this->getPercent() + 11.4 : $this->getPercent();
+    }
 }
