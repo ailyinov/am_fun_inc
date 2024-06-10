@@ -54,7 +54,7 @@ class CustomerTest extends TestCase
     public function testSuccess(): void
     {
         $c = new Customer();
-        $c->setState('CA')
+        $c->setState('NV')
             ->setFico(700)
             ->setMonthlyIncome(100000)
             ->setBirthDate(new \DateTime('now -33 year'));
