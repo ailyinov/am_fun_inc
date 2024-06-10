@@ -14,6 +14,7 @@ readonly class LoanIssuedEmail
     {
         return $this->customerLoanId;
     }
+
     public function getContent(): array
     {
         return [];
