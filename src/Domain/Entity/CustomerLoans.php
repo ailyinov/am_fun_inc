@@ -24,7 +24,7 @@ class CustomerLoans
     private \DateTimeInterface $due_date;
 
     #[ORM\Column]
-    private int $percent;
+    private float $percent;
 
     public function getId(): ?int
     {
@@ -74,12 +74,12 @@ class CustomerLoans
         return $this;
     }
 
-    public function getPercent(): int
+    public function getPercent(): float
     {
         return $this->percent;
     }
 
-    public function setPercent(int $percent): static
+    public function setPercent(float $percent): static
     {
         $this->percent = $percent;
 

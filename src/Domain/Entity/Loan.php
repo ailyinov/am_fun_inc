@@ -16,6 +16,10 @@ class Loan
 
     const STATES_AVAILABLE = ['CA', 'NY', 'NV'];
 
+    const CA_PERCENT_MOD = 11.4;
+
+    const MIN_INCOME_MONTHLY = 1000;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]
@@ -28,7 +32,7 @@ class Loan
     private int $termDays;
 
     #[ORM\Column]
-    private int $percent;
+    private float $percent;
 
     #[ORM\Column]
     private int $amount;
@@ -69,12 +73,12 @@ class Loan
         return $this;
     }
 
-    public function getPercent(): int
+    public function getPercent(): float
     {
         return $this->percent;
     }
 
-    public function setPercent(int $percent): static
+    public function setPercent(float $percent): static
     {
         $this->percent = $percent;
 
@@ -93,8 +97,8 @@ class Loan
         return $this;
     }
 
-    public function getStatePercent(string $state)
+    public function getStatePercent(string $state): float
     {
-        return $state === 'CA' ? $this->getPercent() + 11.4 : $this->getPercent();
+        return $state === 'CA' ? $this->getPercent() + self::CA_PERCENT_MOD : $this->getPercent();
     }
 }

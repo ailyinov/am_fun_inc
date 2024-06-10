@@ -197,6 +197,7 @@ class Customer
         $ok = $this->fico > Loan::FICO_MIN &&
             $age >= Loan::AGE_MIN &&
             $age <= Loan::AGE_MAX &&
+            $this->getMonthlyIncome() >= Loan::MIN_INCOME_MONTHLY &&
             in_array($this->getState(), Loan::STATES_AVAILABLE);
 
         return $ok && ($this->getState() !== 'NY' || 1 === rand(0, 1));
