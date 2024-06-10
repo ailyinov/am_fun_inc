@@ -2,9 +2,9 @@
 
 namespace App\Http\Controller;
 
-use App\App\CustomerCreator;
-use App\App\CustomerUpdater;
-use App\App\LoanIssuer;
+use App\App\Usecase\CustomerCreator;
+use App\App\Usecase\CustomerUpdater;
+use App\App\Usecase\LoanIssuer;
 use App\Domain\CustomerRepositoryInterface;
 use App\Domain\Entity\Customer;
 use App\Domain\Entity\Loan;
@@ -62,7 +62,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{customer}/issue-loan/{loan}', name: 'app_customer_loan_issue', methods: ['GET'])]
+    #[Route('/{customer}/issue-loan/{loan}', name: 'app_customer_loan_issue', methods: ['POST'])]
     public function issueLoan(Customer $customer, Loan $loan, LoanIssuer $loanIssuer): JsonResponse
     {
         $loanIssuer->issue($customer, $loan);

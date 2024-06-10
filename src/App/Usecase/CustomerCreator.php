@@ -1,6 +1,6 @@
 <?php
 
-namespace App\App;
+namespace App\App\Usecase;
 
 use App\Domain\Entity\Customer;
 use App\Http\RequestDto\CustomerCreate;

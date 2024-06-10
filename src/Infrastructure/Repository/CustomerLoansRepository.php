@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\CustomerLoansRepositoryInterface;
 use App\Domain\Entity\CustomerLoans;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -9,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<CustomerLoans>
  */
-class CustomerLoansRepository extends ServiceEntityRepository
+class CustomerLoansRepository extends ServiceEntityRepository implements CustomerLoansRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -6,7 +6,7 @@ use App\Domain\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-interface CustomerRepositoryInterface
+interface CustomerLoansRepositoryInterface
 {
     public function findAll(): array;
 

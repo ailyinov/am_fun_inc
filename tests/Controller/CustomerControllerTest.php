@@ -27,6 +27,7 @@ class CustomerControllerTest extends WebTestCase
         $this->manager = static::getContainer()->get('doctrine')->getManager();
         $this->repository = $this->manager->getRepository(Customer::class);
 
+
         foreach ($this->repository->findAll() as $object) {
             $this->manager->remove($object);
         }
@@ -102,6 +103,34 @@ class CustomerControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
 
         // Use assertions to check that the properties are properly displayed.
+    }
+
+    public function testShowAll(): void
+    {
+        $fixture = new Customer();
+        $fixture->setLastName('My Title');
+        $fixture->setFirstName('My Title');
+        $fixture->setBirthDate(new \DateTime());
+        $fixture->setCity('New York');
+        $fixture->setState('NY');
+        $fixture->setZip('2222');
+        $fixture->setSsn('My Title');
+        $fixture->setFico(300);
+        $fixture->setEmail('My Title');
+        $fixture->setPhoneNumber('My Title');
+        $fixture->setMonthlyIncome(5000);
+
+        $this->manager->persist($fixture);
+        $this->manager->flush();
+
+        $this->client->request('GET', sprintf('%s', $this->path));
+
+        self::assertResponseStatusCodeSame(200);
+
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals($fixture->getId(), $responseData['customers'][0]['id']);
     }
 
     public function testEdit(): void
@@ -261,7 +290,7 @@ class CustomerControllerTest extends WebTestCase
         $this->manager->flush();
 
         $this->client->request(
-            'GET',
+            'POST',
             sprintf('%s%s/issue-loan/%s', $this->path, $fc->getId(), $fl->getId()),
         );
 
