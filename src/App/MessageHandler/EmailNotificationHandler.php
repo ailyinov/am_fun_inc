@@ -7,7 +7,7 @@ use App\Domain\Message\LoanIssuedEmail;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class EmailNotificationHandler
+readonly class EmailNotificationHandler
 {
     public function __construct(
         private CustomerLoansRepositoryInterface $customerLoansRepository,
