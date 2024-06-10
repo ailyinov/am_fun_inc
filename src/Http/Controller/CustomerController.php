@@ -2,16 +2,16 @@
 
 namespace App\Http\Controller;
 
+use App\App\CustomerCreator;
+use App\App\CustomerUpdater;
 use App\App\LoanIssuer;
+use App\Domain\CustomerRepositoryInterface;
 use App\Domain\Entity\Customer;
 use App\Domain\Entity\Loan;
 use App\Http\RequestDto\CustomerCreate;
 use App\Http\RequestDto\CustomerUpdate;
-use App\Infrastructure\Repository\CustomerRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CustomerController extends AbstractController
 {
     #[Route('/', name: 'app_customer_index', methods: ['GET'])]
-    public function index(CustomerRepository $customerRepository): Response
+    public function index(CustomerRepositoryInterface $customerRepository): JsonResponse
     {
         return $this->json([
             'customers' => $customerRepository->findAll(),
@@ -27,30 +27,17 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/new', name: 'app_customer_new', methods: ['POST'])]
-    public function new(#[MapRequestPayload] CustomerCreate $customerCreate, EntityManagerInterface $entityManager): Response
+    public function new(#[MapRequestPayload] CustomerCreate $customerCreate, CustomerCreator $customerCreator): JsonResponse
     {
-        $c = new Customer();
-        $c->setFirstName($customerCreate->firstName)
-            ->setLastName($customerCreate->lastName)
-            ->setEmail($customerCreate->email)
-            ->setCity($customerCreate->city)
-            ->setState($customerCreate->state)
-            ->setZip($customerCreate->zip)
-            ->setFico($customerCreate->fico)
-            ->setBirthDate(\DateTime::createFromFormat('Y-m-d', $customerCreate->birthDate))
-            ->setPhoneNumber($customerCreate->phoneNumber)
-            ->setMonthlyIncome($customerCreate->monthlyIncome)
-            ->setSsn($customerCreate->ssn);
-        $entityManager->persist($c);
-        $entityManager->flush();
+        $customer = $customerCreator->create($customerCreate);
 
         return $this->json([
-            'customer' => [],
+            'customer' => $customer,
         ]);
     }
 
     #[Route('/{customer}', name: 'app_customer_show', methods: ['GET'])]
-    public function show(Customer $customer): Response
+    public function show(Customer $customer): JsonResponse
     {
         return $this->json([
             'customer' => $customer,
@@ -58,23 +45,12 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/{customer}', name: 'app_customer_edit', methods: ['PUT'])]
-    public function edit(#[MapRequestPayload] CustomerUpdate $customerUpdate, Customer $customer, EntityManagerInterface $entityManager): JsonResponse
+    public function edit(#[MapRequestPayload] CustomerUpdate $customerUpdate, Customer $customer, CustomerUpdater $customerUpdater): JsonResponse
     {
-        $customer->setFirstName($customerUpdate->firstName ?? $customer->getFirstName())
-            ->setLastName($customerUpdate->lastName ?? $customer->getLastName())
-            ->setEmail($customerUpdate->email ?? $customer->getEmail())
-            ->setCity($customerUpdate->city ?? $customer->getCity())
-            ->setState($customerUpdate->state ?? $customer->getState())
-            ->setZip($customerUpdate->zip ?? $customer->getZip())
-            ->setFico($customerUpdate->fico ?? $customer->getFico())
-            ->setBirthDate($customerUpdate->birthDate ? \DateTime::createFromFormat('Y-m-d', $customerUpdate->birthDate) : $customer->getBirthDate())
-            ->setPhoneNumber($customerUpdate->phoneNumber ?? $customer->getPhoneNumber())
-            ->setSsn($customerUpdate->ssn ?? $customer->getSsn());
-        $entityManager->persist($customer);
-        $entityManager->flush();
+        $customer = $customerUpdater->update($customerUpdate, $customer);
 
         return $this->json([
-            'customer' => [],
+            'customer' => $customer,
         ]);
     }
 

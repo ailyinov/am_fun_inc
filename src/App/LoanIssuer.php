@@ -7,15 +7,15 @@ use App\Domain\Entity\CustomerLoans;
 use App\Domain\Entity\Loan;
 use Doctrine\ORM\EntityManagerInterface;
 
-class LoanIssuer
+readonly class LoanIssuer
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private EntityManagerInterface $em,
     )
     {
     }
 
-    public function issue(Customer $customer, Loan $loan)
+    public function issue(Customer $customer, Loan $loan): void
     {
         if ($customer->canGetLoan($loan)) {
             $cl = new CustomerLoans();
