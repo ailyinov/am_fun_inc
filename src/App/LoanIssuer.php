@@ -24,7 +24,7 @@ readonly class LoanIssuer
                 ->setDueDate((new \DateTime())->add(new \DateInterval(sprintf('P%sD', $loan->getTermDays()))))
                 ->setPercent($loan->getStatePercent($customer->getState()));
 
-            $this->em->persist($loan);
+            $this->em->persist($cl);
             $this->em->flush();
         }
     }

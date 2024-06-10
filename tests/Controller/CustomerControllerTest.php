@@ -3,7 +3,9 @@
 namespace App\Test\Controller;
 
 use App\Domain\Entity\Customer;
+use App\Domain\Entity\CustomerLoans;
 use App\Domain\Entity\Loan;
+use App\Infrastructure\Repository\CustomerLoansRepository;
 use App\Infrastructure\Repository\LoanRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -16,6 +18,7 @@ class CustomerControllerTest extends WebTestCase
     private EntityManagerInterface $manager;
     private EntityRepository $repository;
     private LoanRepository $loanRepo;
+    private CustomerLoansRepository $customerLoansRepo;
     private string $path = '/customer/';
 
     protected function setUp(): void
@@ -29,8 +32,12 @@ class CustomerControllerTest extends WebTestCase
         }
 
         $this->loanRepo = $this->manager->getRepository(Loan::class);
-
         foreach ($this->loanRepo->findAll() as $object) {
+            $this->manager->remove($object);
+        }
+
+        $this->customerLoansRepo = $this->manager->getRepository(CustomerLoans::class);
+        foreach ($this->customerLoansRepo->findAll() as $object) {
             $this->manager->remove($object);
         }
 
@@ -226,5 +233,44 @@ class CustomerControllerTest extends WebTestCase
         $this->assertSame(200, $response->getStatusCode());
         $responseData = json_decode($response->getContent(), true);
         $this->assertTrue($responseData['ok']);
+    }
+
+    public function testIssueLoan(): void
+    {
+        $fc = new Customer();
+        $fc->setLastName('Value');
+        $fc->setFirstName('Value');
+        $fc->setBirthDate(new \DateTime('now -22 year'));
+        $fc->setCity('Los Angeles');
+        $fc->setState('CA');
+        $fc->setZip('2223');
+        $fc->setSsn('Value');
+        $fc->setFico(600);
+        $fc->setEmail('Value');
+        $fc->setPhoneNumber('Value');
+        $fc->setMonthlyIncome(5000);
+        $this->manager->persist($fc);
+
+        $fl = new Loan();
+        $fl->setPercent(2)
+            ->setName('business')
+            ->setAmount(1000000)
+            ->setTermDays(365 * 5);
+        $this->manager->persist($fl);
+
+        $this->manager->flush();
+
+        $this->client->request(
+            'GET',
+            sprintf('%s%s/issue-loan/%s', $this->path, $fc->getId(), $fl->getId()),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData['ok']);
+
+        $cl = $this->customerLoansRepo->findOneBy(['customerId' => $fc->getId()]);
+        $this->assertEquals($fl->getId(), $cl->getLoanId());
     }
 }
