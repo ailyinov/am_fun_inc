@@ -17,7 +17,7 @@ readonly class LoanIssuer
 
     public function issue(Customer $customer, Loan $loan): void
     {
-        if ($customer->canGetLoan($loan)) {
+        if ($customer->canGetLoan()) {
             $cl = new CustomerLoans();
             $cl->setCustomerId($customer->getId())
                 ->setLoanId($loan->getId())

@@ -58,7 +58,7 @@ class CustomerController extends AbstractController
     public function isLoanAvailable(Customer $customer, Loan $loan): JsonResponse
     {
         return $this->json([
-            'ok' => $customer->canGetLoan($loan),
+            'ok' => $customer->canGetLoan(),
         ]);
     }
 

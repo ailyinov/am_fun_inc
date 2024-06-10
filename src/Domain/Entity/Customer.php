@@ -191,7 +191,7 @@ class Customer
         return $this;
     }
 
-    public function canGetLoan(Loan $loan): bool
+    public function canGetLoan(): bool
     {
         $age = $this->age();
         $ok = $this->fico > Loan::FICO_MIN &&
