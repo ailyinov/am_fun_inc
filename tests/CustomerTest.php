@@ -23,7 +23,7 @@ class CustomerTest extends TestCase
         $c = new Customer();
         $c->setState('CA')
             ->setFico(501)
-            ->setMonthlyIncome(100)
+            ->setMonthlyIncome(999)
             ->setBirthDate(new \DateTime('now -22 year'));
 
         $this->assertFalse($c->canGetLoan());
@@ -34,19 +34,30 @@ class CustomerTest extends TestCase
         $c = new Customer();
         $c->setState('CA')
             ->setFico(300)
-            ->setMonthlyIncome(100000)
+            ->setMonthlyIncome(1001)
             ->setBirthDate(new \DateTime('now -22 year'));
 
         $this->assertFalse($c->canGetLoan());
     }
 
-    public function testDeclineByAge(): void
+    public function testDeclineByAgeMax(): void
     {
         $c = new Customer();
         $c->setState('CA')
-            ->setFico(700)
-            ->setMonthlyIncome(100000)
-            ->setBirthDate(new \DateTime('now -99 year'));
+            ->setFico(501)
+            ->setMonthlyIncome(1001)
+            ->setBirthDate(new \DateTime('now -61 year'));
+
+        $this->assertFalse($c->canGetLoan());
+    }
+
+    public function testDeclineByAgeMin(): void
+    {
+        $c = new Customer();
+        $c->setState('CA')
+            ->setFico(501)
+            ->setMonthlyIncome(1001)
+            ->setBirthDate(new \DateTime('now -17 year'));
 
         $this->assertFalse($c->canGetLoan());
     }
@@ -56,7 +67,7 @@ class CustomerTest extends TestCase
         $c = new Customer();
         $c->setState('NV')
             ->setFico(700)
-            ->setMonthlyIncome(100000)
+            ->setMonthlyIncome(1001)
             ->setBirthDate(new \DateTime('now -33 year'));
 
         $this->assertTrue($c->canGetLoan());
