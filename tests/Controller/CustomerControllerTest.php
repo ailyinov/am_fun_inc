@@ -272,5 +272,8 @@ class CustomerControllerTest extends WebTestCase
 
         $cl = $this->customerLoansRepo->findOneBy(['customerId' => $fc->getId()]);
         $this->assertEquals($fl->getId(), $cl->getLoanId());
+
+        $deuDate = (new \DateTime())->add(new \DateInterval(sprintf('P%sD', $fl->getTermDays())));
+        $this->assertEquals($deuDate->format('Y-m-d'), $cl->getDueDate()->format('Y-m-d'));
     }
 }
